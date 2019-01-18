@@ -1,8 +1,9 @@
 <resources>
     <string name="app_name">Visualized SelectionSort</string>
-    <string name="selection_short">Selection Short</string>
+    <string name="selection_short">Selection Sort</string>
     <string name="enter_no_of_elements_to_sort">Enter no of Elements to sort</string>
     <string name="sort">Sort</string>
     <string name="or">OR</string>
     <string name="random_sort">Random Sort</string>
+    <string name="sorting_steps">Sorting Steps...</string>
 </resources>

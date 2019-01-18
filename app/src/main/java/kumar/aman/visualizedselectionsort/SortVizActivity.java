@@ -89,9 +89,14 @@ public class SortVizActivity extends AppCompatActivity implements SortObserver {
         } else {
             int i = 0;
             for (String s : elementsString.split(",")) {
-                setElementsToTextView(i, Integer.parseInt(s));
-                elements.add(Integer.parseInt(s));
-                i++;
+                try {
+                    setElementsToTextView(i, Integer.parseInt(s));
+                    elements.add(Integer.parseInt(s));
+                    i++;
+                } catch (Exception e){
+                    onError("Invalid Input Elements.....");
+                    return elements;
+                }
             }
         }
         return elements;
@@ -120,10 +125,18 @@ public class SortVizActivity extends AppCompatActivity implements SortObserver {
     }
 
     @Override
-    public void onSelectCurrentMinimum(int position) {
+    public void onIterrationCompleted(ArrayList<Integer> sortedElements,int positionOnCompleted) {
+        for (int i = 0; i < sortedElements.size(); i++) {
+            setElementsToTextView(i, sortedElements.get(i));
+            setCompletedElement(positionOnCompleted);
+
+        }
+    }
+
+    void setCompletedElement(int position){
         switch (position) {
             case 0: one.setBackgroundColor(getResources().getColor(android.R.color.holo_green_dark));
-                    one.setTextColor(getResources().getColor(android.R.color.white));
+                one.setTextColor(getResources().getColor(android.R.color.white));
                 break;
             case 1: two.setBackgroundColor(getResources().getColor(android.R.color.holo_green_dark));
                 two.setTextColor(getResources().getColor(android.R.color.white));
@@ -139,32 +152,5 @@ public class SortVizActivity extends AppCompatActivity implements SortObserver {
                 break;
             default: break;
         }
-    }
-
-    @Override
-    public void onSelectedSmallerThanCurrentMinimum(int position) {
-        switch (position) {
-            case 0: one.setBackgroundColor(getResources().getColor(android.R.color.holo_red_light));
-                one.setTextColor(getResources().getColor(android.R.color.white));
-                break;
-            case 1: two.setBackgroundColor(getResources().getColor(android.R.color.holo_red_light));
-                two.setTextColor(getResources().getColor(android.R.color.white));
-                break;
-            case 2: three.setBackgroundColor(getResources().getColor(android.R.color.holo_red_light));
-                three.setTextColor(getResources().getColor(android.R.color.white));
-                break;
-            case 3: four.setBackgroundColor(getResources().getColor(android.R.color.holo_red_light));
-                four.setTextColor(getResources().getColor(android.R.color.white));
-                break;
-            case 4: five.setBackgroundColor(getResources().getColor(android.R.color.holo_red_light));
-                five.setTextColor(getResources().getColor(android.R.color.white));
-                break;
-            default: break;
-        }
-    }
-
-    @Override
-    public void onSwap(int item1Position, int item2Position) {
-
     }
 }

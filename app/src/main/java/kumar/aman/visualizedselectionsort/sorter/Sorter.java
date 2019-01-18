@@ -12,7 +12,10 @@ public class Sorter implements SelectionSorter {
     public Sorter(ArrayList<Integer> elements, SortObserver sortObserver) {
         this.elements = elements;
         this.sortObserver = sortObserver;
-        sort();
+        if (elements.size() == 1)
+            sortObserver.onError("1 Element is always Sorted.");
+        else
+            sort();
     }
 
     @Override
@@ -21,45 +24,28 @@ public class Sorter implements SelectionSorter {
         final int n = elements.size();
         Handler handler1 = new Handler();
         for (int i = 0; i < n - 1; i++) {
-
-            // for Current Minimum
             final int finalI = i;
+            final int finalI1 = i;
             handler1.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    final int[] min_idx = {finalI};
-                    sortObserver.onSelectCurrentMinimum(min_idx[0]);
-                    sortObserver.onValidatingElements("Iteration "+(finalI +1)+" :  Set (" + elements.get(finalI) + ")as the current minimum, then iterate through the remaining unsorted elements to find the true minimum.",true);
-
-
-
+                    int min_idx = finalI;
+                    sortObserver.onValidatingElements("Iteration " + (finalI + 1) + " :  Set (" + elements.get(finalI) + ")as the current minimum, then iterate through the remaining unsorted elements to find the true minimum.", true);
                     for (int j = finalI + 1; j < n; j++) {
+                        sortObserver.onValidatingElements("Check if (" + elements.get(j) + ") is smaller than the current minimum (" + elements.get(min_idx) + ").", false);
+                        if (elements.get(j) < elements.get(min_idx)) {
+                            sortObserver.onValidatingElements("set (" + elements.get(j) + ") as the new minimum", false);
+                            min_idx = j;
 
-                        Handler handler =  new Handler();
-                        final int finalJ = j;
-                        handler.postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                sortObserver.onSelectedSmallerThanCurrentMinimum(finalJ);
-                                sortObserver.onValidatingElements("Check if (" + elements.get(finalJ) + ") is smaller than the current minimum (" + elements.get(min_idx[0]) + ").",false);
-                                if (elements.get(finalJ) < elements.get(min_idx[0])) {
-                                    sortObserver.onValidatingElements("set (" + elements.get(finalJ) + ") as the new minimum",false);
-                                    min_idx[0] = finalJ;
-
-                                }
-                            }
-                        },1000*j);
-
+                        }
                     }
-
-
-                    sortObserver.onValidatingElements("Swap the minimum ("+elements.get(min_idx[0])+ ") with the first unsorted element ("+elements.get(finalI)+").",false);
-                    int temp = elements.get(min_idx[0]);
-                    elements.set(min_idx[0], elements.get(finalI));
+                    sortObserver.onValidatingElements("Swap the minimum (" + elements.get(min_idx) + ") with the first unsorted element (" + elements.get(finalI) + ").", false);
+                    int temp = elements.get(min_idx);
+                    elements.set(min_idx, elements.get(finalI));
                     elements.set(finalI, temp);
+                    sortObserver.onIterrationCompleted(elements, finalI1);
                 }
-            },1000*i);
-
+            }, 1000 * i);
 
         }
         sortObserver.onFinishSorting(elements);

@@ -33,7 +33,7 @@
             android:gravity="center"
             android:textColor="@android:color/black"
             android:background="@drawable/text_square_box"
-            android:text="34"/>
+            tools:text="34"/>
 
         <TextView
             android:id="@+id/two"
@@ -45,7 +45,7 @@
             android:gravity="center"
             android:textColor="@android:color/black"
             android:background="@drawable/text_square_box"
-            android:text="34"/>
+            tools:text="34"/>
 
 
         <TextView
@@ -58,7 +58,7 @@
             android:gravity="center"
             android:textColor="@android:color/black"
             android:background="@drawable/text_square_box"
-            android:text="34"/>
+            tools:text="34"/>
 
 
         <TextView
@@ -71,7 +71,7 @@
             android:gravity="center"
             android:textColor="@android:color/black"
             android:background="@drawable/text_square_box"
-            android:text="34"/>
+            tools:text="34"/>
 
         <TextView
             android:id="@+id/five"
@@ -83,13 +83,14 @@
             android:layout_margin="5dp"
             android:textColor="@android:color/black"
             android:background="@drawable/text_square_box"
-            android:text="34"/>
+            tools:text="34"/>
     </LinearLayout>
 
     <TextView
+        android:id="@+id/header_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Sorting Steps..."
+        android:text="@string/sorting_steps"
         android:textColor="@android:color/black"
         android:textStyle="bold"
         android:layout_marginBottom="20dp"
