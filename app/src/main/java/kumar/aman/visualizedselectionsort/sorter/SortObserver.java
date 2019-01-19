@@ -6,5 +6,5 @@ public interface SortObserver {
     void onError(String message);
     void onValidatingElements(String message,Boolean isNewIteraton);
     void onFinishSorting(ArrayList<Integer> sortedElements);
-    void onIterrationCompleted(ArrayList<Integer> sortedElements,int positionOnCompleted);
+    void onIterationCompleted(ArrayList<Integer> sortedElements, int positionOnCompleted);
 }

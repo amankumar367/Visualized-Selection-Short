@@ -1,11 +1,17 @@
 package kumar.aman.visualizedselectionsort;
 
+import android.content.res.Resources;
 import android.graphics.Typeface;
+import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.View;
+import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,9 +25,12 @@ public class SortVizActivity extends AppCompatActivity implements SortObserver {
 
     Sorter sorter;
     ArrayList<Integer> elements = new ArrayList<>();
-    TextView one, two, three, four, five;
-    LinearLayout logContainer;
+    LinearLayout logContainer, elementContainer;
     ImageView backImage;
+    TextView headerTitle;
+    ScrollView logScrollView;
+    HorizontalScrollView textBoxScrollView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,13 +50,12 @@ public class SortVizActivity extends AppCompatActivity implements SortObserver {
     }
 
     private void init() {
-        one = findViewById(R.id.one);
-        two = findViewById(R.id.two);
-        three = findViewById(R.id.three);
-        four = findViewById(R.id.four);
-        five = findViewById(R.id.five);
         backImage = findViewById(R.id.back);
         logContainer = findViewById(R.id.log_container);
+        elementContainer = findViewById(R.id.elements_container);
+        headerTitle = findViewById(R.id.header_title);
+        logScrollView = findViewById(R.id.log_scrollview);
+        textBoxScrollView = findViewById(R.id.text_box_scrollview);
     }
 
     private void handleIntentData() {
@@ -64,25 +72,27 @@ public class SortVizActivity extends AppCompatActivity implements SortObserver {
 
 
     @Override
-    public void onValidatingElements(String message,Boolean isNewIteration) {
+    public void onValidatingElements(String message, Boolean isNewIteration) {
         TextView newLine = new TextView(this);
         LinearLayout.LayoutParams params = new
                 LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        params.setMargins(5,5,5,10);
+        params.setMargins(5, 5, 5, 10);
         newLine.setLayoutParams(params);
         newLine.setText(message);
-        newLine.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_star_black_24dp,0,0,0);
+        newLine.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_star_black_24dp, 0, 0, 0);
         newLine.setCompoundDrawablePadding(10);
-        if(isNewIteration)
+        if (isNewIteration)
             newLine.setTypeface(null, Typeface.BOLD);
         logContainer.addView(newLine);
     }
 
-    ArrayList<Integer> getIntElementsFromString(String elementsString) {
+    ArrayList<Integer> getIntElementsFromString(String inputString) {
+        String elementsString = inputString.replace(" ","");
         if (elementsString.equals("random")) {
             Random r = new Random();
-            for (int i = 0; i < 5; i++) {
+            for (int i = 0; i < 15; i++) {
                 int random = r.nextInt(100 - 28) - 30;
+                drawTextBox(i, String.valueOf(random));
                 setElementsToTextView(i, random);
                 elements.add(random);
             }
@@ -90,33 +100,42 @@ public class SortVizActivity extends AppCompatActivity implements SortObserver {
             int i = 0;
             for (String s : elementsString.split(",")) {
                 try {
+                    drawTextBox(i, s);
                     setElementsToTextView(i, Integer.parseInt(s));
                     elements.add(Integer.parseInt(s));
                     i++;
-                } catch (Exception e){
+                } catch (Exception e) {
                     onError("Invalid Input Elements.....");
                     return elements;
                 }
             }
         }
+        setHeaderTitle(elements.size());
         return elements;
 
     }
 
+    private void drawTextBox(int position, String elementValue) {
+        TextView newBoxElement = new TextView(this);
+        Resources r = getResources();
+        int width = (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 50, r.getDisplayMetrics());
+        int height = (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 50, r.getDisplayMetrics());
+        LinearLayout.LayoutParams params = new
+                LinearLayout.LayoutParams(width, height);
+        params.setMargins(5, 5, 5, 5);
+        newBoxElement.setTextSize(TypedValue.COMPLEX_UNIT_SP,20);
+        newBoxElement.setLayoutParams(params);
+        newBoxElement.setGravity(Gravity.CENTER);
+        newBoxElement.setText(elementValue);
+        newBoxElement.setId(position);
+        newBoxElement.setBackgroundDrawable(getResources().getDrawable(R.drawable.text_square_box));
+        newBoxElement.setFocusable(true);
+        elementContainer.addView(newBoxElement);
+    }
+
     private void setElementsToTextView(int position, int value) {
-        switch (position) {
-            case 0: one.setText(String.valueOf(value));
-                break;
-            case 1: two.setText(String.valueOf(value));
-                break;
-            case 2: three.setText(String.valueOf(value));
-                break;
-            case 3: four.setText(String.valueOf(value));
-                break;
-            case 4: five.setText(String.valueOf(value));
-                break;
-            default: break;
-        }
+        ((TextView) findViewById(position)).setText(String.valueOf(value));
+
     }
 
     @Override
@@ -125,7 +144,7 @@ public class SortVizActivity extends AppCompatActivity implements SortObserver {
     }
 
     @Override
-    public void onIterrationCompleted(ArrayList<Integer> sortedElements,int positionOnCompleted) {
+    public void onIterationCompleted(ArrayList<Integer> sortedElements, int positionOnCompleted) {
         for (int i = 0; i < sortedElements.size(); i++) {
             setElementsToTextView(i, sortedElements.get(i));
             setCompletedElement(positionOnCompleted);
@@ -133,24 +152,25 @@ public class SortVizActivity extends AppCompatActivity implements SortObserver {
         }
     }
 
-    void setCompletedElement(int position){
-        switch (position) {
-            case 0: one.setBackgroundColor(getResources().getColor(android.R.color.holo_green_dark));
-                one.setTextColor(getResources().getColor(android.R.color.white));
-                break;
-            case 1: two.setBackgroundColor(getResources().getColor(android.R.color.holo_green_dark));
-                two.setTextColor(getResources().getColor(android.R.color.white));
-                break;
-            case 2: three.setBackgroundColor(getResources().getColor(android.R.color.holo_green_dark));
-                three.setTextColor(getResources().getColor(android.R.color.white));
-                break;
-            case 3: four.setBackgroundColor(getResources().getColor(android.R.color.holo_green_dark));
-                four.setTextColor(getResources().getColor(android.R.color.white));
-                break;
-            case 4: five.setBackgroundColor(getResources().getColor(android.R.color.holo_green_dark));
-                five.setTextColor(getResources().getColor(android.R.color.white));
-                break;
-            default: break;
-        }
+    void setCompletedElement(int position) {
+        findViewById(position).setBackgroundColor(getResources().getColor(android.R.color.holo_green_dark));
+        ((TextView) findViewById(position)).setTextColor(getResources().getColor(android.R.color.white));
+        if(position%4==0)
+            scrollBoxElementTo(position);
+        logScrollView.fullScroll(View.FOCUS_DOWN);
     }
+
+    void setHeaderTitle(int size){
+        headerTitle.setText("Total Elements = "+size +"\n\n Sorting Steps....");
+    }
+
+    void scrollBoxElementTo(final int position){
+        textBoxScrollView.post(new Runnable() {
+            public void run() {
+                if(position>=4)
+                    textBoxScrollView.smoothScrollTo(elementContainer.getChildAt(position-2).getRight(), 0);
+            }
+        });
+    }
+
 }

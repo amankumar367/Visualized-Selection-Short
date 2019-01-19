@@ -23,7 +23,7 @@ public class Sorter implements SelectionSorter {
 
         final int n = elements.size();
         Handler handler1 = new Handler();
-        for (int i = 0; i < n - 1; i++) {
+        for (int i = 0; i < n; i++) {
             final int finalI = i;
             final int finalI1 = i;
             handler1.postDelayed(new Runnable() {
@@ -43,7 +43,7 @@ public class Sorter implements SelectionSorter {
                     int temp = elements.get(min_idx);
                     elements.set(min_idx, elements.get(finalI));
                     elements.set(finalI, temp);
-                    sortObserver.onIterrationCompleted(elements, finalI1);
+                    sortObserver.onIterationCompleted(elements, finalI1);
                 }
             }, 1000 * i);
 

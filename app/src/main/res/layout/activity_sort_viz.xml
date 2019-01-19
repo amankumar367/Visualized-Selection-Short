@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -14,77 +13,24 @@
         android:padding="9dp"
         android:src="@drawable/ic_chevron_left_black_24dp"/>
 
-    <LinearLayout
+    <HorizontalScrollView
+        android:id="@+id/text_box_scrollview"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_margin="10dp"
+        android:layout_weight="1">
 
-        android:gravity="center"
-        android:orientation="horizontal"
-        android:layout_gravity="center">
-
-        <TextView
-            android:id="@+id/one"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:textSize="20sp"
-            android:layout_gravity="center"
-            android:layout_margin="5dp"
+        <LinearLayout
+            android:id="@+id/elements_container"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
             android:gravity="center"
-            android:textColor="@android:color/black"
-            android:background="@drawable/text_square_box"
-            tools:text="34"/>
+            android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/two"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:textSize="20sp"
-            android:layout_margin="5dp"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:textColor="@android:color/black"
-            android:background="@drawable/text_square_box"
-            tools:text="34"/>
+        </LinearLayout>
 
+    </HorizontalScrollView>
 
-        <TextView
-            android:id="@+id/three"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:textSize="20sp"
-            android:layout_margin="5dp"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:textColor="@android:color/black"
-            android:background="@drawable/text_square_box"
-            tools:text="34"/>
-
-
-        <TextView
-            android:id="@+id/four"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:textSize="20sp"
-            android:layout_margin="5dp"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:textColor="@android:color/black"
-            android:background="@drawable/text_square_box"
-            tools:text="34"/>
-
-        <TextView
-            android:id="@+id/five"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:textSize="20sp"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:layout_margin="5dp"
-            android:textColor="@android:color/black"
-            android:background="@drawable/text_square_box"
-            tools:text="34"/>
-    </LinearLayout>
 
     <TextView
         android:id="@+id/header_title"
@@ -97,6 +43,7 @@
         android:gravity="center"/>
 
     <ScrollView
+        android:id="@+id/log_scrollview"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="5">
